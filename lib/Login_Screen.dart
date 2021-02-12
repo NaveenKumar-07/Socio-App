@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Buttons.FacebookNew,
                             text: 'Login with Facebook',
                             onPressed: () async {
-                              await handleLogin();
+                              await AuthService().handleLogin();
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                       builder: (context) => HomeScreen()));
