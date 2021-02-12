@@ -10,9 +10,7 @@ class AuthService {
   final FacebookLogin facebookLogin = FacebookLogin();
   final TwitterLogin twitterLogin = new TwitterLogin(
       consumerKey: 'wLnZ9Sh43Oola0LPXD4Axz8Mh',
-      //'1220680908346294272-BJOn6NIV1AntpaRcgyfeVEHS53hrr2',
       consumerSecret: 'ygpi1x1hDe1Yg8y78iZoX7PEFz6Z3XdbSNjloLhLntGpWcKFbb'
-      //'1Mc7u5BRpMa1cSO6QgwK6XieyXNC6PCK5tjdb1MC3vQt1',
       );
 
   Future signInWithGoogle() async {
@@ -61,12 +59,30 @@ class AuthService {
       newMessage = result.errorMessage;
     }
   }
+  Future<void> handleLogin() async {
+    final FacebookLoginResult result = await facebookLogin.logIn(['email']);
+    switch (result.status) {
+      case FacebookLoginStatus.cancelledByUser:
+        break;
+      case FacebookLoginStatus.error:
+        break;
+      case FacebookLoginStatus.loggedIn:
+        try {
+          await loginWithFacebook(result);
+        } catch (e) {
+          print(e);
+        }
+        break;
+    }
+  }
 
-  /*void _signInWithTwitter(String token, String secret) async {
-    final AuthCredential credential =
-        TwitterAuthProvider.credential(accessToken: token, secret: secret);
+  Future loginWithFacebook(FacebookLoginResult result) async {
+    final FacebookAccessToken accessToken = result.accessToken;
+    AuthCredential credential =
+        FacebookAuthProvider.credential(accessToken.token);
     await _auth.signInWithCredential(credential);
-  }*/
+  }
+
 
   void logout() async {
     await googleSignIn.signOut();
