@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sociologin/AuthService.dart';
-
 import 'Login_Screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,23 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String email, name, photo;
   FirebaseAuth _auth = FirebaseAuth.instance;
-
-  getdata() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    setState(() {
-      email = sharedPreferences.getString('email');
-      name = sharedPreferences.getString('name');
-      photo = sharedPreferences.getString('purl');
-    });
-  }
-
-  @override
-  void initState() {
-    getdata();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          //constraints: BoxConstraints.expand(),
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage('assets/images/bg5.jpg'),
@@ -71,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       radius: 70.0,
                       backgroundColor: Colors.blue,
                       backgroundImage: NetworkImage(_auth.currentUser.photoURL),
-                      //backgroundImage: ,
                     ),
                     SizedBox(
                       height: 40,
@@ -107,7 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: RaisedButton(
                           color: Colors.red,
                           splashColor: Colors.blueGrey,
-                          //highlightColor: Colors.black,
                           textColor: Colors.black,
                           shape: StadiumBorder(),
                           focusElevation: 20,
@@ -118,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           onPressed: () async {
                             await AuthService().logout();
-                            //await _auth.signOut();
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) => LoginScreen()));
