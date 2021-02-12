@@ -78,7 +78,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       topRight: Radius.circular(60.0),
                       topLeft: Radius.circular(60.0)),
                 ),
-                //color: Colors.white,
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.all(30),
@@ -162,43 +161,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  Future<void> handleLogin() async {
-    final FacebookLoginResult result = await facebookLogin.logIn(['email']);
-    switch (result.status) {
-      case FacebookLoginStatus.cancelledByUser:
-        break;
-      case FacebookLoginStatus.error:
-        break;
-      case FacebookLoginStatus.loggedIn:
-        try {
-          await loginWithFacebook(result);
-        } catch (e) {
-          print(e);
-        }
-        break;
-    }
-  }
-
-  Future loginWithFacebook(FacebookLoginResult result) async {
-    final FacebookAccessToken accessToken = result.accessToken;
-    AuthCredential credential =
-        FacebookAuthProvider.credential(accessToken.token);
-    await _auth.signInWithCredential(credential);
-  }
-
-  /*Future<UserCredential> signInWithFacebook() async {
-    try {
-      final AccessToken accessToken = await FacebookAuth.instance.login();
-      final FacebookAuthCredential credential = FacebookAuthProvider.credential(
-        accessToken.token,
-      );
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } on FacebookAuthException catch (e) {
-      // handle the FacebookAuthException
-    } on FirebaseAuthException catch (e) {
-      // handle the FirebaseAuthException
-    } finally {}
-    return null;
-  }*/
 }
